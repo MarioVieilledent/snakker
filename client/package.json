@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "tsc && vite build --emptyOutDir",
     "format:write": "npx prettier . --write",
     "format:check": "npx prettier . --check",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
