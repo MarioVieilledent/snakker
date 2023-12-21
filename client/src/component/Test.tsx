@@ -1,21 +1,13 @@
 import { Button, Flex, Input, Text } from "@chakra-ui/react";
-import { socket } from "../socket/socket";
 import { useState } from "react";
-import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { addMessage } from "../store/messagesSlice";
-import { Message } from "../types";
+import { useAppSelector } from "../store/hooks";
+import { Message } from "../../../types/message";
+import { sendMessage } from "../socket/socket";
 
 const Test = () => {
   const messages = useAppSelector((state) => state.messages.messages);
 
   const [message, setMessage] = useState<string>("");
-
-  const dispatch = useAppDispatch();
-
-  socket.on("test2", (data: Message) => {
-    console.log("triggered");
-    dispatch(addMessage(data));
-  });
 
   return (
     <Flex
@@ -28,11 +20,11 @@ const Test = () => {
     >
       <Text>Snakker</Text>
       <Input onChange={(e) => setMessage(e.target.value)} />
-      <Button onClick={() => socket.emit("test", message)}>Send</Button>
+      <Button onClick={() => sendMessage(message)}>Send</Button>
       <Text>Messages</Text>
       <Flex direction="column">
         {messages.map((m: Message, i: number) => (
-          <Text key={i}>{m.message}</Text>
+          <Text key={i}>{m.content}</Text>
         ))}
       </Flex>
     </Flex>

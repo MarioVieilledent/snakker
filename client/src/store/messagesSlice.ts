@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { Message } from "../types";
+import { Message } from "../../../types/message";
 
 interface MessagesSlice {
   messages: Message[];
