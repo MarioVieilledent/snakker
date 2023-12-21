@@ -7,13 +7,17 @@ function handleSocket(http) {
         },
     });
     io.on("connection", (socket) => {
-        console.log(`⚡: ${socket.id} user just connected!`);
+        console.log(`✅ ${socket.id} user just connected!`);
         socket.on("disconnect", () => {
-            console.log("🔥: A user disconnected");
+            console.log("❌ A user disconnected");
         });
-        socket.on("test", (message) => {
-            console.log(message);
-            io.sockets.emit("test2", { message: message });
+        // When a user send a message
+        socket.on("sendMessage", (wrapped) => {
+            console.log(`💬 New message: ${wrapped.data.content}`);
+            // Send the user the message had been sent correctly
+            socket.emit("messageConfirmation", wrapped.data);
+            // Send the message to all other user connected
+            io.sockets.emit("newMessage", { message: wrapped.data });
         });
     });
 }

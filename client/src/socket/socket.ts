@@ -1,8 +1,8 @@
 import { io } from "socket.io-client";
 import { addMessage } from "../store/messagesSlice";
 import { store } from "../store/store";
-import { Message } from "../../../types/message";
-import { SocketWrapper } from "../../../types/socketTypes";
+import { Message } from "../../../server/types/message";
+import { SocketWrapper } from "../../../server/types/socketTypes";
 
 // "undefined" means the URL will be computed from the `window.location` object
 const URL: any =
@@ -10,11 +10,14 @@ const URL: any =
 
 export const socket = io(URL);
 
-/**
- * Get new message from server
- */
-socket.on("newMessage", (data: Message) => {
-  store.dispatch(addMessage(data));
+// Get new message from server
+socket.on("newMessage", (mes: Message) => {
+  store.dispatch(addMessage(mes));
+});
+
+// When
+socket.on("messageConfirmation", (mes: Message) => {
+  store.dispatch(addMessage(mes));
 });
 
 /**
@@ -33,5 +36,5 @@ export const sendMessage = (content: string): void => {
     data: message,
   };
 
-  socket.emit("test", wrappedMessage);
+  socket.emit("sendMessage", wrappedMessage);
 };
