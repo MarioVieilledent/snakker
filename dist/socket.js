@@ -1,5 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const mongo_1 = require("./mongo");
+const NumberOfMessageswLoadedOnConnection = 100;
 function handleSocket(http) {
     const io = require("socket.io")(http, {
         cors: {
@@ -7,17 +9,25 @@ function handleSocket(http) {
         },
     });
     io.on("connection", (socket) => {
-        console.log(`✅ ${socket.id} user just connected!`);
-        socket.on("disconnect", () => {
-            console.log("❌ A user disconnected");
+        (0, mongo_1.getLastNDocuments)(NumberOfMessageswLoadedOnConnection)
+            .then((data) => {
+            socket.emit("fetchLastMessages", data);
+        })
+            .catch((e) => {
+            console.error(e);
         });
-        // When a user send a message
+        socket.on("disconnect", () => {
+        });
         socket.on("sendMessage", (wrapped) => {
-            console.log(`💬 New message: ${wrapped.data.content}`);
-            // Send the user the message had been sent correctly
-            socket.emit("messageConfirmation", wrapped.data);
-            // Send the message to all other user connected
-            io.sockets.emit("newMessage", { message: wrapped.data });
+            (0, mongo_1.sendMessage)(wrapped.data)
+                .then((data) => {
+                console.log(`sendMessage in mongo db worked: ${data}`);
+                socket.emit("messageConfirmation", wrapped.data);
+                io.sockets.emit("newMessage", { message: wrapped.data });
+            })
+                .catch((e) => {
+                console.error(e);
+            });
         });
     });
 }

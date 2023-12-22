@@ -9,6 +9,7 @@ const cors = require("cors");
 app.use(cors());
 app.use(express.static("./static"));
 
+// Socket.io
 handleSocket(http);
 
 app.get("/test", (req: Request, res: Response) => {

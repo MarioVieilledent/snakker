@@ -1,5 +1,5 @@
 import { io } from "socket.io-client";
-import { addMessage } from "../store/messagesSlice";
+import { addMessage, initMessages } from "../store/messagesSlice";
 import { store } from "../store/store";
 import { Message } from "../../../server/types/message";
 import { SocketWrapper } from "../../../server/types/socketTypes";
@@ -10,12 +10,14 @@ const URL: any =
 
 export const socket = io(URL);
 
-// Get new message from server
-socket.on("newMessage", (mes: Message) => {
-  store.dispatch(addMessage(mes));
+// Fetch messages on load
+socket.on("fetchLastMessages", (data: Message[]) => {
+  store.dispatch(initMessages(data));
 });
 
-// When
+// Get new message from server
+
+// Confirmation of the message just sent
 socket.on("messageConfirmation", (mes: Message) => {
   store.dispatch(addMessage(mes));
 });
@@ -23,7 +25,7 @@ socket.on("messageConfirmation", (mes: Message) => {
 /**
  * Wraps message content and send it to server
  */
-export const sendMessage = (content: string): void => {
+export const sendMessageSocket = (content: string): void => {
   const message: Message = {
     author: "debug",
     content,

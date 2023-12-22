@@ -6,7 +6,8 @@
     "rootDir": "server",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "strict": true
+    "strict": true,
+    "removeComments": true
   },
-  "exclude": ["client"]
+  "exclude": ["client", "server/types"]
 }

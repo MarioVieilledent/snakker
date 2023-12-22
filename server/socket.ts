@@ -1,5 +1,8 @@
+import { getLastNDocuments, sendMessage } from "./mongo";
 import { Message } from "./types/message";
 import { SocketWrapper } from "./types/socketTypes";
+
+const NumberOfMessageswLoadedOnConnection: number = 100;
 
 function handleSocket(http: any) {
   const io = require("socket.io")(http, {
@@ -9,20 +12,33 @@ function handleSocket(http: any) {
   });
 
   io.on("connection", (socket: any) => {
-    console.log(`✅ ${socket.id} user just connected!`);
+    getLastNDocuments(NumberOfMessageswLoadedOnConnection)
+      .then((data) => {
+        socket.emit("fetchLastMessages", data);
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+
     socket.on("disconnect", () => {
-      console.log("❌ A user disconnected");
+      // Nothing here for now
     });
 
     // When a user send a message
     socket.on("sendMessage", (wrapped: SocketWrapper<Message>) => {
-      console.log(`💬 New message: ${wrapped.data.content}`);
+      sendMessage(wrapped.data)
+        .then((data) => {
+          console.log(`sendMessage in mongo db worked: ${data}`);
 
-      // Send the user the message had been sent correctly
-      socket.emit("messageConfirmation", wrapped.data);
+          // Send the user the message had been sent correctly
+          socket.emit("messageConfirmation", wrapped.data);
 
-      // Send the message to all other user connected
-      io.sockets.emit("newMessage", { message: wrapped.data });
+          // Send the message to all other user connected
+          io.sockets.emit("newMessage", { message: wrapped.data });
+        })
+        .catch((e) => {
+          console.error(e);
+        });
     });
   });
 }

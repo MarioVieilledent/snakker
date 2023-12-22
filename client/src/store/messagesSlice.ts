@@ -14,12 +14,19 @@ const messagesSlice = createSlice({
   initialState,
 
   reducers: {
+    // Initialize the list of messages
+    initMessages(state, action) {
+      state.messages = action.payload;
+    },
+
+    // Add a message in the list
     addMessage(state, action) {
-      state.messages.push(action.payload);
+      // Method unshift: pushes at index 0
+      state.messages.unshift(action.payload);
     },
   },
 });
 
-export const { addMessage } = messagesSlice.actions;
+export const { addMessage, initMessages } = messagesSlice.actions;
 
 export default messagesSlice.reducer;

@@ -16,3 +16,24 @@ Chat app for me in Norway
   - [ ] Supports gif tenor?
   - [ ] Support website nicer display
   - [ ] Support spoiler
+  - [ ] Pin, unpin messages, and see the list of pins
+- Languages
+  - [ ] English
+  - [ ] French
+  - [ ] Norwegian Bokmål
+  - [ ] Norwegian Nynorsk
+
+## Database and types
+
+- User
+  - [ ] Has a unique ID
+  - [ ] Can change anytime his nickname
+  - [ ] Can change anytime his profile picture
+- Chat
+  - [ ] Has two users with ID
+  - [ ] Has a list of messages
+- Message
+  - [ ] User ID
+  - [ ] Content containing md somehow
+  - [ ] List of emojis or reactions
+  - [ ] Is pined
