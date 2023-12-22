@@ -36,7 +36,7 @@ exports.sendMessage = exports.getLastNDocuments = void 0;
 const dotenv = __importStar(require("dotenv"));
 dotenv.config({ path: "./.env" });
 const mongodb_1 = require("mongodb");
-const uri = `mongodb+srv://${process.env.MONGODBUSER}:${process.env.MONGODBPASSWORD}@pazucluster.klrce.mongodb.net/?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@pazucluster.klrce.mongodb.net/?retryWrites=true&w=majority`;
 const dbName = "Snakker";
 const collectionMessage = "Message";
 let client;

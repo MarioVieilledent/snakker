@@ -9,7 +9,9 @@
     "format:write": "npx prettier . --write",
     "format:check": "npx prettier . --check",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "i18n:toc": "i18next-resources-for-ts toc -i ./public/locales/en -o ./src/types/resources.ts",
+    "i18n:interface": "i18next-resources-for-ts interface -i ./public/locales/en -o ./src/types/resources.d.ts"
   },
   "dependencies": {
     "@chakra-ui/react": "^2.8.2",
@@ -23,6 +25,7 @@
     "i18next-resources-for-ts": "^1.4.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-i18next": "^14.0.0",
     "react-redux": "^9.0.4",
     "redux": "^5.0.0",
     "socket.io-client": "^4.7.2"

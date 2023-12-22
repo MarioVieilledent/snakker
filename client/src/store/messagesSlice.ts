@@ -10,7 +10,7 @@ const initialState: MessagesSlice = {
 };
 
 const messagesSlice = createSlice({
-  name: "socket",
+  name: "messages",
   initialState,
 
   reducers: {

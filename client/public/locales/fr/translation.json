@@ -1,0 +1,11 @@
+{
+  "pleaseConnect": "Connexion",
+  "nickname": "Pseudo",
+  "nicknameHelper": "Le pseudo peut être changé à tout moment",
+  "nicknameRequired": "Le pseudo est obligatoire",
+  "password": "Password",
+  "passwordHelper": "Do not enter your own password",
+  "passwordRequired": "Mandatory",
+  "connectAction": "Se connecter",
+  "cancelAction": "Annuler"
+}

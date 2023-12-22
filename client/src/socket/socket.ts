@@ -3,6 +3,8 @@ import { addMessage, initMessages } from "../store/messagesSlice";
 import { store } from "../store/store";
 import { Message } from "../../../server/types/message";
 import { SocketWrapper } from "../../../server/types/socketTypes";
+import { User } from "../../../server/types/user";
+import { setToken } from "@/store/userSlice";
 
 // "undefined" means the URL will be computed from the `window.location` object
 const URL: any =
@@ -10,33 +12,56 @@ const URL: any =
 
 export const socket = io(URL);
 
-// Fetch messages on load
-socket.on("fetchLastMessages", (data: Message[]) => {
-  store.dispatch(initMessages(data));
+// After trying to connect, success
+socket.on(
+  "connectionOk",
+  ({ messages, token }: { messages: Message[]; token: string }) => {
+    console.log("connectionOk");
+    store.dispatch(setToken(token));
+    store.dispatch(initMessages(messages));
+  },
+);
+
+// After trying to connect, fail
+socket.on("connectionFailed", ({ reason }: { reason: string }) => {
+  console.log("connectionFailed: " + reason);
+  // Do something if connection fails
 });
 
-// Get new message from server
+// When any task is refused by server
+socket.on("notAllowed", ({ reason }: { reason: string }) => {
+  console.log("notAllowed: " + reason);
+  // Do something if server refuses
+});
 
 // Confirmation of the message just sent
 socket.on("messageConfirmation", (mes: Message) => {
   store.dispatch(addMessage(mes));
 });
 
-/**
- * Wraps message content and send it to server
- */
+// Tries to connect as a user
+export const tryToConnectSocket = (user: User): void => {
+  const wrappedUser = wrap("tryToConnect", user);
+  socket.emit("tryToConnect", wrappedUser);
+};
+
+// Send a message to the server
 export const sendMessageSocket = (content: string): void => {
   const message: Message = {
     author: "debug",
+    date: new Date().toString(),
     content,
   };
-
-  const wrappedMessage: SocketWrapper<Message> = {
-    name: "sendMessage",
-    token: "unsafe-token",
-    date: new Date(),
-    data: message,
-  };
-
+  const wrappedMessage = wrap("sendMessage", message);
   socket.emit("sendMessage", wrappedMessage);
+};
+
+// Socket Wrapper, add a name, a date, the user info and a token
+const wrap = <T>(name: string, data: T): SocketWrapper<T> => {
+  return {
+    name,
+    token: store.getState().user.user.token ?? "",
+    date: new Date().toString(),
+    data,
+  };
 };

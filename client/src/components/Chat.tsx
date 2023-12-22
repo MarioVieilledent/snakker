@@ -3,13 +3,14 @@ import { sendMessageSocket } from "../socket/socket";
 import { useState } from "react";
 import Messages from "./Messages";
 
+import leftArrowIcon from "/icons/leftArrowIcon.svg";
 import emojiIcon from "/icons/emojiIcon.svg";
 import sendIcon from "/icons/sendIcon.svg";
 import plusIcon from "/icons/plusIcon.svg";
 
 const Chat = () => {
   const gap = "8px";
-  const headerFooterHeight = "48px";
+  const padding = "48px";
   const headerColor = "#222";
   const appBgColor = "#333";
 
@@ -31,13 +32,26 @@ const Chat = () => {
 
   return (
     <Flex direction="column" w="100" h="100%" bgColor={appBgColor}>
-      <Flex h={headerFooterHeight} bgColor={headerColor}></Flex>
-      <Flex flexGrow={1}>
-        <Messages flexGrow={1} />
+      <Flex
+        h={padding}
+        bgColor={headerColor}
+        align="center"
+        justifyContent="space-between"
+      >
+        <Button
+          h="100%"
+          bgColor="transparent"
+          w={padding}
+          p={gap}
+          onClick={sendMessage}
+        >
+          <Image src={leftArrowIcon} alt="left arrow icon" />
+        </Button>
       </Flex>
-      <Flex h={headerFooterHeight}>
+      <Messages flex="1" />
+      <Flex h={padding}>
         <Flex w="100%" h="100%">
-          <Button h="100%" bgColor="transparent" w={headerFooterHeight} p={gap}>
+          <Button h="100%" bgColor="transparent" w={padding} p={gap}>
             <Image src={emojiIcon} alt="emoji icon" />
           </Button>
           <Flex flexGrow={1} py={gap}>
@@ -54,19 +68,14 @@ const Chat = () => {
             <Button
               h="100%"
               bgColor="transparent"
-              w={headerFooterHeight}
+              w={padding}
               p={gap}
               onClick={sendMessage}
             >
               <Image src={sendIcon} alt="send icon" />
             </Button>
           ) : (
-            <Button
-              h="100%"
-              bgColor="transparent"
-              w={headerFooterHeight}
-              p={gap}
-            >
+            <Button h="100%" bgColor="transparent" w={padding} p={gap}>
               <Image src={plusIcon} alt="plus icon" />
             </Button>
           )}

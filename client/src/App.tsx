@@ -1,7 +1,13 @@
-import Chat from "./component/Chat";
+import Chat from "./components/Chat";
+import ConnectionModal from "./modals/ConnectionModal";
 
 function App() {
-  return <Chat />;
+  return (
+    <>
+      <Chat />
+      <ConnectionModal />
+    </>
+  );
 }
 
 export default App;

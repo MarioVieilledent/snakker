@@ -1,10 +1,9 @@
 import * as dotenv from "dotenv";
-import { Message } from "./types/message";
 dotenv.config({ path: "./.env" });
-import { MongoClient, Db, InsertOneResult, ServerApiVersion } from "mongodb";
+import { Message } from "./types/message";
+import { MongoClient, Db, ServerApiVersion } from "mongodb";
 
-const uri = `mongodb+srv://${process.env.MONGODBUSER}:${process.env.MONGODBPASSWORD}@pazucluster.klrce.mongodb.net/?retryWrites=true&w=majority`;
-
+const uri = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@pazucluster.klrce.mongodb.net/?retryWrites=true&w=majority`;
 const dbName = "Snakker";
 const collectionMessage = "Message";
 
