@@ -27,7 +27,8 @@
       "@types/*": ["src/types/*"],
       "@i18n/*": ["src/i18n/*"],
       "@store/*": ["src/store/*"],
-      "@components/*": ["src/components/*"]
+      "@components/*": ["src/components/*"],
+      "@server/*": ["../../../server/*"]
     }
   },
   "include": ["src"],

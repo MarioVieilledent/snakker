@@ -7,5 +7,12 @@
   "passwordHelper": "Do not enter your own password",
   "passwordRequired": "Mandatory",
   "connectAction": "Connect",
-  "cancelAction": "Cancel"
+  "cancelAction": "Cancel",
+  "connectionError": "Can't connect to server",
+  "connectionErrorReason": "Reason",
+  "connectionErrorWrongPassword": "Wrong password",
+  "connectionSuccess": "You are now connected!",
+  "connectionSuccessDescription": "Enjoy :D",
+  "notAllowed": "You are not allowed to perform this action",
+  "notAllowedDescription": "Please connect again"
 }

@@ -1,6 +1,4 @@
-import { defaultGuestUser } from "@/constants";
-import { tryToConnectSocket } from "@/socket/socket";
-import { useAppSelector } from "@/store/hooks";
+import { useAppSelector } from "@store/hooks";
 import {
   Input,
   Button,
@@ -17,15 +15,16 @@ import {
   FormErrorMessage,
   FormHelperText,
 } from "@chakra-ui/react";
-
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { User } from "../../../server/types/user";
+import { defaultGuestUser } from "@/constants";
+import { tryToConnectSocket } from "@/socket/socket";
 
 const ConnectionModal = () => {
   const user = useAppSelector((state) => state.user);
-  const { t } = useTranslation();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { t } = useTranslation();
 
   const [nickname, setNickname] = useState<string>("");
   const [password, setPassword] = useState<string>("");

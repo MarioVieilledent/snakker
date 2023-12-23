@@ -12,6 +12,7 @@ export default defineConfig({
       "@i18n": path.resolve(__dirname, "./src/i18n"),
       "@store": path.resolve(__dirname, "./src/store"),
       "@components": path.resolve(__dirname, "./src/components"),
+      "@server": path.resolve(__dirname, "../../../server"),
     },
   },
   plugins: [react()],

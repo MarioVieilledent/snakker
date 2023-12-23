@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
-import messageReducer from "./messagesSlice";
-import userSlice from "./userSlice";
+import messagesReducer from "./messagesSlice";
+import userReducer from "./userSlice";
+import socketEventReducer from "./socketEventSlice";
 
 export const store = configureStore({
   reducer: {
-    messages: messageReducer,
-    user: userSlice,
+    messages: messagesReducer,
+    user: userReducer,
+    socketEvent: socketEventReducer,
   },
 });
 
