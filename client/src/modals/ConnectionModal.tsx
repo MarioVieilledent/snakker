@@ -40,7 +40,7 @@ const ConnectionModal = () => {
   };
 
   useEffect(() => {
-    if (user.user.id === defaultGuestUser) {
+    if (user.user.nickname === defaultGuestUser) {
       onOpen();
     }
     if (user.user.token) {
@@ -55,15 +55,15 @@ const ConnectionModal = () => {
         <ModalCloseButton />
         <ModalBody>
           <FormControl isInvalid={isNicknameError}>
-            <FormLabel>{t("nickname")}</FormLabel>
+            <FormLabel>{t("nicknameOrEmail")}</FormLabel>
             <Input
               value={nickname}
               onChange={(e) => setNickname(e.target.value)}
             />
             {!isNicknameError ? (
-              <FormHelperText>{t("nicknameHelper")}</FormHelperText>
+              <FormHelperText>{t("nicknameOrEmailHelper")}</FormHelperText>
             ) : (
-              <FormErrorMessage>{t("nicknameRequired")}</FormErrorMessage>
+              <FormErrorMessage>{t("mandatory")}</FormErrorMessage>
             )}
           </FormControl>
           <FormControl isInvalid={isPasswordError}>

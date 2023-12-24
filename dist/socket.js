@@ -13,18 +13,27 @@ function handleSocket(http) {
         socket.on("disconnect", () => {
         });
         socket.on("tryToConnect", (wrapped) => {
-            if (wrapped.data.password === access_1.appPassword) {
-                (0, mongo_1.getLastNDocuments)(NumberOfMessageswLoadedOnConnection)
-                    .then((messages) => {
-                    socket.emit("connectionOk", { messages, token: access_1.appToken });
-                })
-                    .catch((e) => {
-                    console.error(e);
-                });
-            }
-            else {
-                socket.emit("connectionFailed", { reason: "Wrong password" });
-            }
+            setTimeout(() => {
+                if (wrapped.data.password === access_1.appPassword) {
+                    if (checkNicknameOrEmail(wrapped.data.nickname)) {
+                        (0, mongo_1.getLastNDocuments)(NumberOfMessageswLoadedOnConnection)
+                            .then((messages) => {
+                            socket.emit("connectionOk", { messages, token: access_1.appToken });
+                        })
+                            .catch((e) => {
+                            console.error(e);
+                        });
+                    }
+                    else {
+                        socket.emit("connectionFailed", {
+                            reason: "wrong nickname or email",
+                        });
+                    }
+                }
+                else {
+                    socket.emit("connectionFailed", { reason: "wrong password" });
+                }
+            }, 500);
         });
         socket.on("sendMessage", (wrapped) => {
             if ((0, access_1.auth)(wrapped.token)) {
@@ -43,5 +52,8 @@ function handleSocket(http) {
             }
         });
     });
+}
+function checkNicknameOrEmail(id) {
+    return mongo_1.users.some((user) => user.nickname === id || user.email === id);
 }
 exports.default = handleSocket;

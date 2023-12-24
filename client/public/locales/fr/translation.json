@@ -1,11 +1,19 @@
 {
   "pleaseConnect": "Connexion",
-  "nickname": "Pseudo",
-  "nicknameHelper": "Le pseudo peut être changé à tout moment",
-  "nicknameRequired": "Le pseudo est obligatoire",
-  "password": "Password",
-  "passwordHelper": "Do not enter your own password",
-  "passwordRequired": "Mandatory",
+  "nicknameOrEmail": "Pseudo ou email",
+  "nicknameOrEmailHelper": "Le pseudo et l'email peuvent être changés à tout moment",
+  "mandatory": "Champ obligatoire",
+  "password": "Mot de passe",
+  "passwordHelper": "N'entrez aucun mot de passe personnel !",
+  "passwordRequired": "Mot de passe obligatoire",
   "connectAction": "Se connecter",
-  "cancelAction": "Annuler"
+  "cancelAction": "Annuler",
+  "connectionError": "Impossible de se connecter au serveur",
+  "connectionErrorReasonColumn": "Raison :",
+  "connectionSuccess": "Vous êtes connecté !",
+  "connectionSuccessDescription": "Benvenue !",
+  "connectionLoading": "Connexion",
+  "connectionLoadingDescription": "Veuillez patienter...",
+  "notAllowed": "Vous n'êtes âs autorisé à réaliser cette action.",
+  "notAllowedDescription": "Veuillez vous reconnecter."
 }

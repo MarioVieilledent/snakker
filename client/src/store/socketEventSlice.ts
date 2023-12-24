@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 interface SocketEventSlice {
-  event: string;
+  event: "notAllowed" | "tryToConnect" | "none";
   description: string;
 }
 

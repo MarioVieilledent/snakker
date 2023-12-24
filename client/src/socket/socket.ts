@@ -13,20 +13,21 @@ const URL: any =
 
 export const socket = io(URL);
 
-// After trying to connect, success
-socket.on(
-  "connectionOk",
-  ({ messages, token }: { messages: Message[]; token: string }) => {
-    store.dispatch(newEvent({ event: "connectionOk", description: "none" }));
-    store.dispatch(setToken(token));
-    store.dispatch(initMessages(messages));
-  },
-);
+export let connectionPromise: Promise<any> = new Promise((resolve, reject) => {
+  // After trying to connect, success
+  socket.on(
+    "connectionOk",
+    ({ messages, token }: { messages: Message[]; token: string }) => {
+      store.dispatch(setToken(token));
+      store.dispatch(initMessages(messages));
+      resolve({});
+    },
+  );
 
-// After trying to connect, fail
-socket.on("connectionFailed", ({ reason }: { reason: string }) => {
-  console.log("Connection failed, reason: " + reason);
-  store.dispatch(newEvent({ event: "connectionFailed", description: "none" }));
+  // After trying to connect, fail
+  socket.on("connectionFailed", ({ reason }: { reason: string }) => {
+    reject(reason);
+  });
 });
 
 // When any task is refused by server
@@ -41,6 +42,9 @@ socket.on("messageConfirmation", (mes: Message) => {
 
 // Tries to connect as a user
 export const tryToConnectSocket = (user: User): void => {
+  store.dispatch(
+    newEvent({ event: "tryToConnect", description: new Date().toString() }),
+  );
   const wrappedUser = wrap("tryToConnect", user);
   socket.emit("tryToConnect", wrappedUser);
 };

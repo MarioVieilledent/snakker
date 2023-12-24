@@ -1,4 +1,4 @@
-import { getLastNDocuments, sendMessage } from "./mongo";
+import { getLastNDocuments, sendMessage, users } from "./mongo";
 import { Message } from "./types/message";
 import { User } from "./types/user";
 import { SocketWrapper } from "./types/socketTypes";
@@ -21,17 +21,25 @@ function handleSocket(http: any) {
 
     // When a user tries to log in
     socket.on("tryToConnect", (wrapped: SocketWrapper<User>) => {
-      if (wrapped.data.password === appPassword) {
-        getLastNDocuments(NumberOfMessageswLoadedOnConnection)
-          .then((messages) => {
-            socket.emit("connectionOk", { messages, token: appToken });
-          })
-          .catch((e) => {
-            console.error(e);
-          });
-      } else {
-        socket.emit("connectionFailed", { reason: "Wrong password" });
-      }
+      setTimeout(() => {
+        if (wrapped.data.password === appPassword) {
+          if (checkNicknameOrEmail(wrapped.data.nickname)) {
+            getLastNDocuments(NumberOfMessageswLoadedOnConnection)
+              .then((messages) => {
+                socket.emit("connectionOk", { messages, token: appToken });
+              })
+              .catch((e) => {
+                console.error(e);
+              });
+          } else {
+            socket.emit("connectionFailed", {
+              reason: "wrong nickname or email",
+            });
+          }
+        } else {
+          socket.emit("connectionFailed", { reason: "wrong password" });
+        }
+      }, 500);
     });
 
     // When a user send a message
@@ -55,6 +63,10 @@ function handleSocket(http: any) {
       }
     });
   });
+}
+
+function checkNicknameOrEmail(id: string): boolean {
+  return users.some((user) => user.nickname === id || user.email === id);
 }
 
 export default handleSocket;

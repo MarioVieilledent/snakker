@@ -1,18 +1,19 @@
 {
   "pleaseConnect": "Log in",
-  "nickname": "Nickname",
-  "nicknameHelper": "Nickname can be changed anytime",
-  "nicknameRequired": "A nickname is mandatory",
+  "nicknameOrEmail": "Nickname of e-mail",
+  "nicknameOrEmailHelper": "Nickname and e-mail can be changed anytime",
+  "mandatory": "Mandatory field",
   "password": "Password",
   "passwordHelper": "Do not enter your own password",
-  "passwordRequired": "Mandatory",
+  "passwordRequired": "Password mandatory",
   "connectAction": "Connect",
   "cancelAction": "Cancel",
   "connectionError": "Can't connect to server",
-  "connectionErrorReason": "Reason",
-  "connectionErrorWrongPassword": "Wrong password",
+  "connectionErrorReasonColumn": "Reason:",
   "connectionSuccess": "You are now connected!",
   "connectionSuccessDescription": "Enjoy :D",
-  "notAllowed": "You are not allowed to perform this action",
-  "notAllowedDescription": "Please connect again"
+  "connectionLoading": "Connecting",
+  "connectionLoadingDescription": "Please wait...",
+  "notAllowed": "You are not allowed to perform this action.",
+  "notAllowedDescription": "Please connect again."
 }

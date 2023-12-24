@@ -1,4 +1,4 @@
-import { Input, Flex, Image, Button } from "@chakra-ui/react";
+import { Input, Flex, Image, Button, useColorMode } from "@chakra-ui/react";
 import { sendMessageSocket } from "../socket/socket";
 import { useState } from "react";
 import Messages from "./Messages";
@@ -13,6 +13,8 @@ const Chat = () => {
   const padding = "48px";
   const headerColor = "#222";
   const appBgColor = "#333";
+
+  const { toggleColorMode } = useColorMode();
 
   const [input, setInput] = useState<string>("");
 
@@ -38,12 +40,15 @@ const Chat = () => {
         align="center"
         justifyContent="space-between"
       >
+        <Button h="100%" bgColor="transparent" w={padding} p={gap}>
+          <Image src={leftArrowIcon} alt="left arrow icon" />
+        </Button>
         <Button
           h="100%"
           bgColor="transparent"
           w={padding}
           p={gap}
-          onClick={sendMessage}
+          onClick={toggleColorMode}
         >
           <Image src={leftArrowIcon} alt="left arrow icon" />
         </Button>

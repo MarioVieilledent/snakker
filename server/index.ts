@@ -1,5 +1,6 @@
 import express, { Express, Request, Response } from "express";
 import handleSocket from "./socket";
+import { gatherAllUsers } from "./mongo";
 
 const PORT = process.env.PORT || "3000";
 const app: Express = express();
@@ -11,6 +12,9 @@ app.use(express.static("./static"));
 
 // Socket.io
 handleSocket(http);
+
+// At the start of the server, get all users
+gatherAllUsers();
 
 app.get("/test", (req: Request, res: Response) => {
   res.send("It works!");

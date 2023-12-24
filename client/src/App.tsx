@@ -5,32 +5,39 @@ import { useEffect } from "react";
 import { useAppSelector } from "@store/hooks";
 import { toastDuration } from "./constants";
 import { useTranslation } from "react-i18next";
+import { connectionPromise } from "./socket/socket";
 
 function App() {
   const socketEvent = useAppSelector((state) => state.socketEvent);
 
   const { t } = useTranslation();
 
-  const toastConnectionOk = useToast();
-  const toastWrongPassword = useToast();
+  const toastConnection = useToast();
   const toastNotAllowed = useToast();
 
   useEffect(() => {
-    if (socketEvent.event === "connectionOk") {
-      toastConnectionOk({
-        title: t("connectionSuccess"),
-        description: t("connectionSuccessDescription"),
-        status: "success",
-        duration: toastDuration,
-        isClosable: true,
-      });
-    } else if (socketEvent.event === "connectionFailed") {
-      toastWrongPassword({
-        title: t("connectionError"),
-        description: t("connectionErrorWrongPassword"),
-        status: "error",
-        duration: toastDuration,
-        isClosable: true,
+    if (socketEvent.event === "tryToConnect") {
+      toastConnection.promise(connectionPromise, {
+        success: {
+          title: t("connectionSuccess"),
+          description: t("connectionSuccessDescription"),
+          duration: toastDuration,
+          isClosable: true,
+        },
+        error(e) {
+          return {
+            title: t("connectionError"),
+            description: `${t("connectionErrorReasonColumn")} ${e}`,
+            duration: toastDuration,
+            isClosable: true,
+          };
+        },
+        loading: {
+          title: t("connectionLoading"),
+          description: t("connectionLoadingDescription"),
+          duration: toastDuration,
+          isClosable: true,
+        },
       });
     } else if (socketEvent.event === "notAllowed") {
       toastNotAllowed({

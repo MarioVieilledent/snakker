@@ -32,13 +32,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.sendMessage = exports.getLastNDocuments = void 0;
+exports.sendMessage = exports.getLastNDocuments = exports.gatherAllUsers = exports.users = void 0;
 const dotenv = __importStar(require("dotenv"));
 dotenv.config({ path: "./.env" });
 const mongodb_1 = require("mongodb");
 const uri = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@pazucluster.klrce.mongodb.net/?retryWrites=true&w=majority`;
 const dbName = "Snakker";
 const collectionMessage = "Message";
+const collectionUser = "User";
 let client;
 function singleInstanceClient() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -55,6 +56,17 @@ function singleInstanceClient() {
         return client.db(dbName);
     });
 }
+const gatherAllUsers = () => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const db = yield singleInstanceClient();
+        const userList = yield db.collection(collectionUser).find({}).toArray();
+        exports.users = userList;
+    }
+    catch (e) {
+        console.log(`Error fetching messages: ${e}`);
+    }
+});
+exports.gatherAllUsers = gatherAllUsers;
 const getLastNDocuments = (n) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const db = yield singleInstanceClient();
@@ -71,11 +83,9 @@ const getLastNDocuments = (n) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.getLastNDocuments = getLastNDocuments;
-function sendMessage(message) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const db = yield singleInstanceClient();
-        const col = db.collection(collectionMessage);
-        col.insertOne(message);
-    });
-}
+const sendMessage = (message) => __awaiter(void 0, void 0, void 0, function* () {
+    const db = yield singleInstanceClient();
+    const col = db.collection(collectionMessage);
+    col.insertOne(message);
+});
 exports.sendMessage = sendMessage;
