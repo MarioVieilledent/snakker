@@ -8,8 +8,7 @@ interface UserSlice {
 
 const initialState: UserSlice = {
   user: {
-    id: defaultGuestUser,
-    nickname: defaultGuestUser,
+    username: defaultGuestUser,
   },
 };
 

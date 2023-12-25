@@ -4,8 +4,9 @@ import { SocketWrapper } from "../../../server/types/socketTypes";
 import { User } from "../../../server/types/user";
 import { store } from "@store/store";
 import { addMessage, initMessages } from "@store/messagesSlice";
-import { setToken } from "@store/userSlice";
+import { initUser, setToken } from "@store/userSlice";
 import { newEvent } from "@store/socketEventSlice";
+import { setUserAndTokenLS } from "@/localStorage";
 
 // "undefined" means the URL will be computed from the `window.location` object
 const URL: any =
@@ -17,7 +18,18 @@ export let connectionPromise: Promise<any> = new Promise((resolve, reject) => {
   // After trying to connect, success
   socket.on(
     "connectionOk",
-    ({ messages, token }: { messages: Message[]; token: string }) => {
+    ({
+      messages,
+      user,
+      token,
+    }: {
+      messages: Message[];
+      user: User;
+      token: string;
+    }) => {
+      // Save the token and the user information
+      setUserAndTokenLS({ user, token: token });
+      store.dispatch(initUser(user)); // Init user
       store.dispatch(setToken(token));
       store.dispatch(initMessages(messages));
       resolve({});
@@ -52,7 +64,7 @@ export const tryToConnectSocket = (user: User): void => {
 // Send a message to the server
 export const sendMessageSocket = (content: string): void => {
   const message: Message = {
-    author: "debug",
+    username: store.getState().user.user.username,
     date: new Date().toString(),
     content,
   };

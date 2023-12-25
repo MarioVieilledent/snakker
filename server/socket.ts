@@ -23,10 +23,14 @@ function handleSocket(http: any) {
     socket.on("tryToConnect", (wrapped: SocketWrapper<User>) => {
       setTimeout(() => {
         if (wrapped.data.password === appPassword) {
-          if (checkNicknameOrEmail(wrapped.data.nickname)) {
+          if (checkNicknameOrEmail(wrapped.data.username)) {
             getLastNDocuments(NumberOfMessageswLoadedOnConnection)
               .then((messages) => {
-                socket.emit("connectionOk", { messages, token: appToken });
+                socket.emit("connectionOk", {
+                  messages,
+                  user: wrapped.data,
+                  token: appToken,
+                });
               })
               .catch((e) => {
                 console.error(e);
@@ -66,7 +70,7 @@ function handleSocket(http: any) {
 }
 
 function checkNicknameOrEmail(id: string): boolean {
-  return users.some((user) => user.nickname === id || user.email === id);
+  return users.some((user) => user.username === id || user.email === id);
 }
 
 export default handleSocket;

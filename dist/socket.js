@@ -15,10 +15,14 @@ function handleSocket(http) {
         socket.on("tryToConnect", (wrapped) => {
             setTimeout(() => {
                 if (wrapped.data.password === access_1.appPassword) {
-                    if (checkNicknameOrEmail(wrapped.data.nickname)) {
+                    if (checkNicknameOrEmail(wrapped.data.username)) {
                         (0, mongo_1.getLastNDocuments)(NumberOfMessageswLoadedOnConnection)
                             .then((messages) => {
-                            socket.emit("connectionOk", { messages, token: access_1.appToken });
+                            socket.emit("connectionOk", {
+                                messages,
+                                user: wrapped.data,
+                                token: access_1.appToken,
+                            });
                         })
                             .catch((e) => {
                             console.error(e);
@@ -54,6 +58,6 @@ function handleSocket(http) {
     });
 }
 function checkNicknameOrEmail(id) {
-    return mongo_1.users.some((user) => user.nickname === id || user.email === id);
+    return mongo_1.users.some((user) => user.username === id || user.email === id);
 }
 exports.default = handleSocket;

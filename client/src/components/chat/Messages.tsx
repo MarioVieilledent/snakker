@@ -1,6 +1,6 @@
 import { Flex } from "@chakra-ui/react";
-import { Message } from "../../../server/types/message";
-import { useAppSelector } from "../store/hooks";
+import { Message } from "../../../../server/types/message";
+import { useAppSelector } from "../../store/hooks";
 import SingleMessage from "./SingleMessage";
 
 const Messages = (props: any) => {

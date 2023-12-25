@@ -1,11 +1,19 @@
 import { useToast } from "@chakra-ui/react";
-import Chat from "./components/Chat";
+import Chat from "./components/chat/Chat";
 import ConnectionModal from "./modals/ConnectionModal";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAppSelector } from "@store/hooks";
 import { toastDuration } from "./constants";
 import { useTranslation } from "react-i18next";
 import { connectionPromise } from "./socket/socket";
+import { getPageLS, setPageLS } from "./localStorage";
+
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Diary from "./components/diary/Diary";
+import Calendar from "./components/calendar/Calendar";
+
+export type Page = "chat" | "diary" | "calendar";
+export const defaultPage: Page = "chat";
 
 function App() {
   const socketEvent = useAppSelector((state) => state.socketEvent);
@@ -14,6 +22,18 @@ function App() {
 
   const toastConnection = useToast();
   const toastNotAllowed = useToast();
+
+  const [page, setPage] = useState<Page>();
+
+  useEffect(() => {
+    setPage(getPageLS());
+  }, []);
+
+  useEffect(() => {
+    if (page) {
+      setPageLS(page);
+    }
+  }, [page]);
 
   useEffect(() => {
     if (socketEvent.event === "tryToConnect") {
@@ -51,9 +71,36 @@ function App() {
     }
   }, [socketEvent]);
 
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: (
+        <>
+          <Chat />
+        </>
+      ),
+    },
+    {
+      path: "/diary",
+      element: (
+        <>
+          <Diary />
+        </>
+      ),
+    },
+    {
+      path: "/calendar",
+      element: (
+        <>
+          <Calendar />
+        </>
+      ),
+    },
+  ]);
+
   return (
     <>
-      <Chat />
+      <RouterProvider router={router} />
       <ConnectionModal />
     </>
   );

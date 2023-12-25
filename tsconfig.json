@@ -9,5 +9,5 @@
     "strict": true,
     "removeComments": true
   },
-  "exclude": ["client", "server/types"]
+  "exclude": ["client", "server/types/**/*"]
 }

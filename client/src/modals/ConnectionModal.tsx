@@ -20,33 +20,39 @@ import { useTranslation } from "react-i18next";
 import { User } from "../../../server/types/user";
 import { defaultGuestUser } from "@/constants";
 import { tryToConnectSocket } from "@/socket/socket";
+import { getTokenLS, getUserLS } from "@/localStorage";
 
 const ConnectionModal = () => {
   const user = useAppSelector((state) => state.user);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { t } = useTranslation();
 
-  const [nickname, setNickname] = useState<string>("");
+  const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const isNicknameError = nickname === "";
+  const isNicknameError = username === "";
   const isPasswordError = password === "";
 
-  const tryToConnect = (): void => {
+  const tryToConnect = (u: string, p: string): void => {
     const user: User = {
-      nickname,
-      password,
+      username: u,
+      password: p,
     };
     tryToConnectSocket(user);
   };
 
   useEffect(() => {
-    if (user.user.nickname === defaultGuestUser) {
+    const userTemp = getUserLS();
+    if (userTemp.username === defaultGuestUser || !getTokenLS()) {
+      // If no user saved in localEtorage, or token empty, open connection tab
       onOpen();
+    } else {
+      // Else, we try to connect once
+      tryToConnect(userTemp.username, userTemp.password ?? "");
     }
     if (user.user.token) {
       onClose();
     }
-  }, [user]);
+  }, []);
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
@@ -55,13 +61,13 @@ const ConnectionModal = () => {
         <ModalCloseButton />
         <ModalBody>
           <FormControl isInvalid={isNicknameError}>
-            <FormLabel>{t("nicknameOrEmail")}</FormLabel>
+            <FormLabel>{t("usernameOrEmail")}</FormLabel>
             <Input
-              value={nickname}
-              onChange={(e) => setNickname(e.target.value)}
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
             />
             {!isNicknameError ? (
-              <FormHelperText>{t("nicknameOrEmailHelper")}</FormHelperText>
+              <FormHelperText>{t("usernameOrEmailHelper")}</FormHelperText>
             ) : (
               <FormErrorMessage>{t("mandatory")}</FormErrorMessage>
             )}
@@ -85,7 +91,11 @@ const ConnectionModal = () => {
           <Button variant="ghost" onClick={onClose}>
             {t("cancelAction")}
           </Button>
-          <Button colorScheme="blue" mr={3} onClick={tryToConnect}>
+          <Button
+            colorScheme="blue"
+            mr={3}
+            onClick={() => tryToConnect(username, password)}
+          >
             {t("connectAction")}
           </Button>
         </ModalFooter>

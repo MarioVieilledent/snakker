@@ -1,7 +1,7 @@
 {
   "pleaseConnect": "Connexion",
-  "nicknameOrEmail": "Pseudo ou email",
-  "nicknameOrEmailHelper": "Le pseudo et l'email peuvent être changés à tout moment",
+  "usernameOrEmail": "Pseudo ou email",
+  "usernameOrEmailHelper": "Le pseudo et l'email peuvent être changés à tout moment",
   "mandatory": "Champ obligatoire",
   "password": "Mot de passe",
   "passwordHelper": "N'entrez aucun mot de passe personnel !",
@@ -15,5 +15,8 @@
   "connectionLoading": "Connexion",
   "connectionLoadingDescription": "Veuillez patienter...",
   "notAllowed": "Vous n'êtes âs autorisé à réaliser cette action.",
-  "notAllowedDescription": "Veuillez vous reconnecter."
+  "notAllowedDescription": "Veuillez vous reconnecter.",
+  "chatPage": "Chat",
+  "diaryPage": "Journal",
+  "calendarPage": "Agenda"
 }

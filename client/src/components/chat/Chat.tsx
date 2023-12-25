@@ -1,5 +1,5 @@
 import { Input, Flex, Image, Button, useColorMode } from "@chakra-ui/react";
-import { sendMessageSocket } from "../socket/socket";
+import { sendMessageSocket } from "../../socket/socket";
 import { useState } from "react";
 import Messages from "./Messages";
 
